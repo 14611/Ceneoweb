@@ -1,0 +1,46 @@
+{% extends "base.html.jinja" %}
+{% block title %}
+Lista produktów
+{% endblock title %}
+{% block content %}
+<section style="text-align: center; font-size: 20px; margin-top: 50px;">
+    <div id="profile">
+        <h2>Lista produktów</h2>
+    <div id="product">
+        <ul>
+            {% if products %}
+                {% for product in products %}
+                    <li>
+                    <p>ID produktu: {{ product['product_id'] }}</p>
+                        <h2>{{ product['product_name'] }}</h2>
+                        <p>Liczba opinii: {{ product['opinions_count'] }}</p>
+                        <p>Liczba zalet: {{ product['pros_count'] }}</p>
+                        <p>Liczba wad: {{ product['cons_count'] }}</p>
+                        <p>Średnia ocena: {{ '%.2f' | format(product['average_stars']) }}</p>
+                        <p>Histogram ocen:</p>
+                        <ul>
+                            {% for star, count in product['stars_distr'].items() %}
+                                <li>{{ star }} gwiazdek: {{ count }}</li>
+                            {% endfor %}
+                        </ul>
+                        <p>Rekomendacje:</p>
+                        <ul>
+                            {% for recommendation, count in product['recommendation_distr'].items() %}
+                                <li>
+                                    {% if recommendation is none %}
+                                        Brak opisu rekomendacji:  {{ count }}
+                                    {% else %}
+                                        {{ recommendation }}:  {{ count }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            {% else %}
+                <p>Brak danych do wyświetlenia.</p>
+            {% endif %}
+        </ul>
+    </div>
+</section>
+{% endblock content %}
